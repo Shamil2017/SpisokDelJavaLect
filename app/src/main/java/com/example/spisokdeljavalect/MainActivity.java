@@ -32,7 +32,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initViews();
         notesAdapter = new NotesAdapter();
-
+        notesAdapter.setOnNoteClickListener(new NotesAdapter.OnNoteClickListener() {
+            @Override
+            public void onNoteClick(Note note) {
+               database.remove(note.getId());
+               showNotes();
+            }
+        });
         recycleViewNotes.setAdapter(notesAdapter);
         //recycleViewNotes.setLayoutManager(new LinearLayoutManager(this));
 

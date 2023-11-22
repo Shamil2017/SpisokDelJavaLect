@@ -21,6 +21,7 @@ public class AddNoteActivity extends AppCompatActivity {
 
     private Button buttonSaveNote;
 
+    private Database database = Database.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +32,7 @@ public class AddNoteActivity extends AppCompatActivity {
         buttonSaveNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                saveNote();
             }
         });
 
@@ -51,7 +52,11 @@ public class AddNoteActivity extends AppCompatActivity {
         String title = editTextTitle.getText().toString().trim();
         String description = editTextDescription.getText().toString().trim();
         int priority = getPriority();
+        int id = database.getNotes().size();
+        Note note = new Note(id, title, priority);
+        database.add(note);
 
+        finish();
 
     }
     private int getPriority()

@@ -1,7 +1,9 @@
 package com.example.spisokdeljavalect;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,12 +37,29 @@ public class MainActivity extends AppCompatActivity {
         notesAdapter.setOnNoteClickListener(new NotesAdapter.OnNoteClickListener() {
             @Override
             public void onNoteClick(Note note) {
-               database.remove(note.getId());
-               showNotes();
+
             }
         });
         recycleViewNotes.setAdapter(notesAdapter);
         //recycleViewNotes.setLayoutManager(new LinearLayoutManager(this));
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView,
+                                  @NonNull RecyclerView.ViewHolder viewHolder,
+                                  @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                Note note = notesAdapter.getNotes().get(position);
+                database.remove(note.getId());
+                showNotes();
+            }
+        });
+        itemTouchHelper.attachToRecyclerView(recycleViewNotes);
 
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override

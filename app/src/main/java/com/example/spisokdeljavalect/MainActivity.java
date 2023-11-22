@@ -2,6 +2,7 @@ package com.example.spisokdeljavalect;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -21,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Database database =  Database.getInstance();
     private RecyclerView recycleViewNotes;
+    private NotesAdapter notesAdapter;
+
 
 
     @Override
@@ -28,7 +31,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
+        notesAdapter = new NotesAdapter();
 
+        recycleViewNotes.setAdapter(notesAdapter);
+        //recycleViewNotes.setLayoutManager(new LinearLayoutManager(this));
 
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,19 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
     private  void showNotes()
     {
-        linearLayoutNotes.removeAllViews();
-        for (Note note: database.getInstance().getNotes())
-        {
-
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    database.remove(note.getId());
-                    showNotes();
-                }
-            });
-
-            linearLayoutNotes.addView(view);
-        }
+        notesAdapter.setNotes(database.getNotes());
     }
 }

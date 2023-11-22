@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout linearLayoutNotes;
     private FloatingActionButton buttonAdd;
 
-    private Database database = new Database();
+    private Database database =  Database.getInstance();
 
 
 
@@ -56,6 +56,13 @@ public class MainActivity extends AppCompatActivity {
         {
             View view = getLayoutInflater().inflate(R.layout.note_item,
                     linearLayoutNotes, false);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    database.remove(note.getId());
+                    showNotes();
+                }
+            });
             TextView textView = view.findViewById(R.id.textViewNode);
             textView.setText(note.getText());
 

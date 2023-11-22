@@ -2,6 +2,7 @@ package com.example.spisokdeljavalect;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton buttonAdd;
 
     private Database database =  Database.getInstance();
-
+    private RecyclerView recycleViewNotes;
 
 
     @Override
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private  void initViews()
     {
-        linearLayoutNotes = findViewById(R.id.linearLayoutNotes);
+        recycleViewNotes = findViewById(R.id.recycleViewNotes);
         buttonAdd = findViewById(R.id.buttonAddNode);
     }
 
@@ -54,8 +55,7 @@ public class MainActivity extends AppCompatActivity {
         linearLayoutNotes.removeAllViews();
         for (Note note: database.getInstance().getNotes())
         {
-            View view = getLayoutInflater().inflate(R.layout.note_item,
-                    linearLayoutNotes, false);
+
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -63,24 +63,7 @@ public class MainActivity extends AppCompatActivity {
                     showNotes();
                 }
             });
-            TextView textView = view.findViewById(R.id.textViewNode);
-            textView.setText(note.getText());
 
-            int colorResId;
-            switch (note.getPriority())
-            {
-                case 0:
-                    colorResId = android.R.color.holo_green_light;
-                    break;
-                case 1:
-                    colorResId = android.R.color.holo_orange_dark;
-                    break;
-                default:
-                    colorResId = android.R.color.holo_red_dark;
-                    break;
-            }
-            int color = ContextCompat.getColor(this, colorResId);
-            textView.setBackgroundColor(color);
             linearLayoutNotes.addView(view);
         }
     }

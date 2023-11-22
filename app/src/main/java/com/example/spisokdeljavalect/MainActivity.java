@@ -3,6 +3,7 @@ package com.example.spisokdeljavalect;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -30,6 +31,13 @@ public class MainActivity extends AppCompatActivity {
             notes.add(note);
         }
         showNotes();
+        buttonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = AddNoteActivity.newIntent(MainActivity.this);
+                startActivity(intent);
+            }
+        });
     }
 
     private  void initViews()
